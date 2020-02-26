@@ -14,7 +14,8 @@ colorama.init()
 
 
 class MainRegex:
-    def main(self, files, regex):
+    @staticmethod
+    def main(files, regex):
         file_name_stdin = "stdin"  # Send that we work with stdin
         pattern = re.compile(regex, re.MULTILINE)  # Compile the regex
         its_match = 0  # Flag to see if we have regex match
@@ -25,7 +26,7 @@ class MainRegex:
                     match = pattern.search(line)
                     if match != None:  # Condition that check if we have match for up to one
                         its_match = 1
-                    elif pattern.search(line):  # Condition that check if just regex in the file
+                    if pattern.search(line):  # Condition that check if just regex in the file
                         read.print_with_color(line, file_name, count_line, pattern)  # We go to the function to print the regex match
                 if not its_match:  # Condition that check if not regex match in line to print regex not found
                     print("Regex not found")
@@ -34,8 +35,11 @@ class MainRegex:
             for count_line, line in enumerate(sys.stdin, start=1):
                 if pattern.search(line):
                     read.print_with_color(line, file_name_stdin, count_line, pattern)
+                else:
+                    print("Regex not found")
 
-    def print_with_color(self, line, file, count_line, pattern):
+    @staticmethod
+    def print_with_color(line, file, count_line, pattern):
         lastMatch = 0
         formattedText = ''
         colourStr = colorama.Fore.RED
